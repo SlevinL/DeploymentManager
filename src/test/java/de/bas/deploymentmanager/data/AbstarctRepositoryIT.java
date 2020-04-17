@@ -1,6 +1,7 @@
 package de.bas.deploymentmanager.data;
 
 import org.flywaydb.core.Flyway;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -15,7 +16,8 @@ import java.util.Map;
 @Testcontainers
 public class AbstarctRepositoryIT {
 
-   public EntityManager em;
+    private static final String LOCATION = "db/migration/postgres";
+    EntityManager em;
     EntityTransaction tx;
 
     @Container
@@ -26,25 +28,46 @@ public class AbstarctRepositoryIT {
 
     @BeforeEach
     public void init() {
-        Map<String, String> configuration = new HashMap();
-        configuration.put("javax.persistence.jdbc.url", postgres.getJdbcUrl());
-        configuration.put("javax.persistence.jdbc.user", postgres.getUsername());
-        configuration.put("javax.persistence.jdbc.password", postgres.getPassword());
+        Map<String, String> configuration = getConfigMap();
 
+        createEntityManager(configuration);
 
-        this.em = Persistence.
-                createEntityManagerFactory("integration-test", configuration).
-                createEntityManager();
-        this.tx = this.em.getTransaction();
+        runFlyway();
+    }
 
+    private void runFlyway() {
         Flyway flyway = Flyway.configure().dataSource(postgres.getJdbcUrl()
                 , postgres.getUsername()
-                , postgres.getPassword()).locations("db/migration/postgres").load();
-
+                , postgres.getPassword()).locations(LOCATION).load();
         flyway.clean();
         flyway.migrate();
     }
 
+    private void createEntityManager(Map<String, String> configuration) {
+        this.em = Persistence.
+                createEntityManagerFactory("integration-test", configuration).
+                createEntityManager();
+        this.tx = this.em.getTransaction();
+    }
+
+    @NotNull
+    private Map<String, String> getConfigMap() {
+        Map<String, String> configuration = new HashMap();
+        configuration.put("javax.persistence.jdbc.url", postgres.getJdbcUrl());
+        configuration.put("javax.persistence.jdbc.user", postgres.getUsername());
+        configuration.put("javax.persistence.jdbc.password", postgres.getPassword());
+        return configuration;
+    }
+
+    /**
+     * Setzt in das Repository den EntityManager
+     * <p>
+     * repository = injectEntityManager(new ProjectRepository())
+     *
+     * @param repository
+     * @param <S>
+     * @return
+     */
     public <S extends AbstractRepository> S injectEntityManager(S repository) {
         repository.entityManager = em;
         return repository;
