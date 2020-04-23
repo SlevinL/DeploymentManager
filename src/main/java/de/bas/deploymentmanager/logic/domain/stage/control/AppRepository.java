@@ -10,4 +10,11 @@ public interface AppRepository {
     void delete(App app);
 
     List<App> getByProjectIdentifier(String identifier);
+
+    /**
+     * Löscht alle Apps mit den Images (imagesToDelete)
+     *
+     * @param imagesToDelete Liste mit InageIds
+     */
+    void deleteByImageId(List<Long> imagesToDelete);
 }

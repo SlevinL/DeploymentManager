@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<p:panelGrid columns="2" styleClass="no-border">
+    <p:panel header="Projekte verknüpfen" styleClass="no-border">
+        <p:selectManyMenu value="#{projectFormBean.model.selectetSync.projekctIdentifiers}">
+            <f:selectItems value="#{projectFormBean.model.projects}"/>
+        </p:selectManyMenu>
+    </p:panel>
+    <p:panel header="Projekt verwalten" styleClass="no-border">
+        <p:commandButton value="Projekt löschen" styleClass="btn btn-block btn-danger" icon="fa fa-trash"
+                         action="#{projectFormBean.deleteProject()}">
+            <p:confirm header="Projekt löschen"
+                       message="Wollen Sie das Projekt wirklich löschen? Es werden alle Images, Deployments und Apps gelöscht"
+                       icon="pi pi-exclamation-triangle"/>
+        </p:commandButton>
+    </p:panel>
+</p:panelGrid>
+</html>

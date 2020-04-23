@@ -82,4 +82,9 @@ public class StageServiceImpl implements StageService {
     public Optional<List<App>> isImageDeployed(Long imageId) {
         return Optional.empty();
     }
+
+    @Override
+    public void undeployImages(List<Long> imagesToDelete) {
+        appRepository.deleteByImageId(imagesToDelete);
+    }
 }

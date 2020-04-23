@@ -38,4 +38,10 @@ public class ProjectRepositoryImpl extends AbstractRepository implements Project
         }
         return project;
     }
+
+    @Override
+    public void delete(Long projectId) {
+        entityManager.remove(entityManager.find(Project.class, projectId));
+        entityManager.flush();
+    }
 }

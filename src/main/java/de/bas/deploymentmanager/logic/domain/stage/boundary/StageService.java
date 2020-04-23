@@ -41,4 +41,6 @@ public interface StageService {
      * @return Liste an Apps
      */
     Optional<List<App>> isImageDeployed(Long imageId);
+
+    void undeployImages(List<Long> imagesToDelete);
 }

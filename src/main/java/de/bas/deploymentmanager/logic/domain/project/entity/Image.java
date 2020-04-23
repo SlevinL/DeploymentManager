@@ -41,7 +41,7 @@ public class Image {
         return String.format("%s:%s", image, tag);
     }
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id")
     private List<Deployment> deployments;
 

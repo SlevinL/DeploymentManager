@@ -19,4 +19,6 @@ public interface ProjectRepository {
     Project save(Project project);
 
     Project getById(Long id);
+
+    void delete(Long projectId);
 }

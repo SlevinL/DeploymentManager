@@ -70,9 +70,7 @@
                 </div>
             </div>
             <p:panel toggleable="true" collapsed="true" header="Erweiterte Einstellungen">
-                <p:selectManyMenu value="#{projectFormBean.model.selectetSync.projekctIdentifiers}">
-                    <f:selectItems value="#{projectFormBean.model.projects}"/>
-                </p:selectManyMenu>
+                <ui:include src="erweiterteEinstellungen.xhtml"></ui:include>
             </p:panel>
             <p:dataTable value="#{projectFormBean.project.images}"
                          sortMode="single"
@@ -86,9 +84,9 @@
             </p:dataTable>
 
             <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" styleClass="box-danger box-solid">
-                <p:commandButton value="Yes" type="button" styleClass="btn-primary ui-confirmdialog-yes"
+                <p:commandButton value="Ja" type="button" styleClass="btn-primary ui-confirmdialog-yes"
                                  icon="fa fa-check"/>
-                <p:commandButton value="No" type="button" styleClass="btn-danger ui-confirmdialog-no"
+                <p:commandButton value="Nein" type="button" styleClass="btn-danger ui-confirmdialog-no"
                                  icon="fa fa-close"/>
             </p:confirmDialog>
         </h:form>

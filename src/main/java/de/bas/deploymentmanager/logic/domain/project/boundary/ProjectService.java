@@ -84,4 +84,11 @@ public interface ProjectService {
      * @param imageId Id
      */
     void deleteImage(Long imageId) throws ImageDeleteException;
+
+    /**
+     * Löscht alle Images und das Project aus der Datenbank.
+     *
+     * @param projectId
+     */
+    void deleteProject(Long projectId) throws ImageDeleteException;
 }

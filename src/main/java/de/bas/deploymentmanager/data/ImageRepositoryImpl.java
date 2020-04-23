@@ -85,4 +85,12 @@ public class ImageRepositoryImpl extends AbstractRepository implements ImageRepo
     public Image getById(Long imageId) {
         return entityManager.find(Image.class, imageId);
     }
+
+    @Override
+    public void deleteByProjectId(Long projectId) throws ImageDeleteException {
+        List<Image> imagesForProject = getImagesForProject(projectId);
+        for (Image image : imagesForProject) {
+            delete(image.getId());
+        }
+    }
 }

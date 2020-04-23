@@ -5,6 +5,7 @@ import de.bas.deploymentmanager.data.ImageRepositoryImpl;
 import de.bas.deploymentmanager.logic.domain.project.control.ImageRepository;
 import de.bas.deploymentmanager.logic.domain.project.entity.Image;
 import de.bas.deploymentmanager.logic.domain.project.entity.Version;
+import de.bas.deploymentmanager.logic.domain.stage.entity.StageEnum;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class ImgageRepositoryIT extends AbstarctRepositoryIT {
 
     private static final String insertImage = "INSERT INTO IMAGE VALUES (DEFAULT, %s, '%s', null, '%s', '%s', %s, %s, %s, %s)";
+    private static final String insertDeployment = "INSERT INTO DEPLOYMENT (ID, IMAGE_ID, STAGE) VALUES (DEFAULT, %s, '%s')";
 
     ImageRepository repository;
 
@@ -61,6 +63,57 @@ public class ImgageRepositoryIT extends AbstarctRepositoryIT {
         Assertions.assertSame(4, image2_0_0_4.getTag().getBuildNumber());
     }
 
+    @Test
+    void deleteByProjectId() throws Exception {
+        //GIVEN
+        insertImage(1L, 2, 0, 0, 1);
+        insertImage(1L, 2, 0, 0, 3);
+        insertImage(1L, 2, 0, 0, 3);
+
+        //WHEN
+        begin();
+        repository.deleteByProjectId(1L);
+        commit();
+
+        //THEN
+        List<Image> imagesForProject = repository.getImagesForProject(1L);
+        Assertions.assertEquals(0, imagesForProject.size());
+    }
+
+    @Test
+    void deleteByProjectIdWithDeployment() throws Exception {
+        //GIVEN
+        insertImage(1L, 2, 0, 0, 1);
+        insertImage(1L, 2, 0, 0, 3);
+        insertImage(1L, 2, 0, 0, 3);
+        insertDeployment(2L, StageEnum.ETW);
+
+        //WHEN
+        begin();
+        repository.deleteByProjectId(1L);
+        commit();
+
+        //THEN
+        List<Image> imagesForProject = repository.getImagesForProject(1L);
+        Assertions.assertEquals(0, imagesForProject.size());
+    }
+
+    @Test
+    void deleteWithDeployment() throws Exception {
+        //GIVEN
+        insertImage(1L, 2, 0, 0, 1);
+        insertDeployment(2L, StageEnum.ETW);
+
+        //WHEN
+        begin();
+        repository.delete(2L);
+        commit();
+
+        //THEN
+        List<Image> imagesForProject = repository.getImagesForProject(1L);
+        Assertions.assertEquals(1, imagesForProject.size());
+    }
+
     @NotNull
     private Version getVersion() {
         Version version2_0_0 = new Version();
@@ -72,6 +125,11 @@ public class ImgageRepositoryIT extends AbstarctRepositoryIT {
 
     private void insertImage(Long projectId, int major, int minor, int increment, int build) {
         insertImage(projectId, "user", "image", major, minor, increment, build);
+    }
+
+    private void insertDeployment(Long imageId, StageEnum stageId) {
+        String sql = String.format(insertDeployment, imageId, stageId.name());
+        executeNativQuery(sql);
     }
 
     private void insertImage(Long projectId, String user, String image, int major, int minor, int increment, int build) {

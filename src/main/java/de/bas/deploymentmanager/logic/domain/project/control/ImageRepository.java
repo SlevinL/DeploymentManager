@@ -22,4 +22,11 @@ public interface ImageRepository {
     void delete(Long id) throws ImageDeleteException;
 
     Image getById(Long imageId);
+
+    /**
+     * Löscht alle Images eines Projects
+     *
+     * @param projectId Id Project
+     */
+    void deleteByProjectId(Long projectId) throws ImageDeleteException;
 }

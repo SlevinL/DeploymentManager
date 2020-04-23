@@ -200,6 +200,14 @@ public class ProjectServiceImpl implements ProjectService {
         imageRepository.delete(imageId);
     }
 
+    @Override
+    public void deleteProject(Long projectId) throws ImageDeleteException {
+        imageRepository.deleteByProjectId(projectId);
+        log.info("Alle Images für das Project {} gelöscht", projectId);
+        projectRepository.delete(projectId);
+        log.info("Project erfolgreich gelöscht: {}", projectId);
+    }
+
     /**
      * Prüft ob das Image der letzte Build einer Version ist.
      * Wenn ja dann kann das Image nicht gelöscht werden

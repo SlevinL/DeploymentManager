@@ -12,6 +12,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 @Testcontainers
 public class AbstarctRepositoryIT {
@@ -76,6 +77,21 @@ public class AbstarctRepositoryIT {
     public void executeNativQuery(String sql) {
         tx.begin();
         em.createNativeQuery(sql).executeUpdate();
+        tx.commit();
+    }
+
+    public <T> void withTx(Consumer<T> consumer) {
+        tx.begin();
+        consumer.accept(null);
+        tx.commit();
+
+    }
+
+    public void begin() {
+        tx.begin();
+    }
+
+    public void commit() {
         tx.commit();
     }
 
