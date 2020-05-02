@@ -14,6 +14,9 @@ import java.util.Optional;
 public class ImageRepositoryImpl extends AbstractRepository implements ImageRepository {
 
 
+    public ImageRepositoryImpl() {
+    }
+
     @Override
     public List<Image> getImagesForProject(Long projectId) {
         TypedQuery<Image> selectAll = entityManager.createQuery("SELECT image FROM Image image WHERE image.projectId = :applicationId " +
@@ -92,5 +95,13 @@ public class ImageRepositoryImpl extends AbstractRepository implements ImageRepo
         for (Image image : imagesForProject) {
             delete(image.getId());
         }
+    }
+
+    @Override
+    public Image getLatestImage(Long projectId) {
+        TypedQuery<Image> query = entityManager.createQuery("SELECT i FROM Image i WHERE i.projectId =: projectId order by i.createDate DESC", Image.class);
+        query.setParameter("projectId", projectId);
+        List<Image> images = query.getResultList();
+        return images.get(0);
     }
 }

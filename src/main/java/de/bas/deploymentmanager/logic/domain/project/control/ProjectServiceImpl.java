@@ -208,6 +208,13 @@ public class ProjectServiceImpl implements ProjectService {
         log.info("Project erfolgreich gelöscht: {}", projectId);
     }
 
+    @Override
+    public Tag getLatestTag(String identifier) {
+        Project project = projectRepository.getByIfentifier(identifier);
+        Image latest = imageRepository.getLatestImage(project.getId());
+        return latest.getTag();
+    }
+
     /**
      * Prüft ob das Image der letzte Build einer Version ist.
      * Wenn ja dann kann das Image nicht gelöscht werden

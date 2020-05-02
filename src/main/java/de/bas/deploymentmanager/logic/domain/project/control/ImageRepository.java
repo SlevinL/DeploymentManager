@@ -29,4 +29,6 @@ public interface ImageRepository {
      * @param projectId Id Project
      */
     void deleteByProjectId(Long projectId) throws ImageDeleteException;
+
+    Image getLatestImage(Long projectId);
 }

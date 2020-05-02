@@ -91,4 +91,12 @@ public interface ProjectService {
      * @param projectId
      */
     void deleteProject(Long projectId) throws ImageDeleteException;
+
+    /**
+     * Holt das Tag des Images, welches zuletzt gebaut wurde
+     *
+     * @param identifier
+     * @return
+     */
+    Tag getLatestTag(String identifier);
 }

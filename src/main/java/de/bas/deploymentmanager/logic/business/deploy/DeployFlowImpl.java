@@ -17,6 +17,7 @@ import javax.inject.Inject;
 
 @Stateless
 public class DeployFlowImpl implements DeployFlow {
+    public static final String LATEST = "latest";
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final ProjectService projectService;
@@ -34,13 +35,23 @@ public class DeployFlowImpl implements DeployFlow {
     @Override
     public void imageDeployed(String identifier, StageEnum stageName, String tag, String host, String port) {
         try {
-            Tag tagToDeploy = new Tag(tag);
+            Tag tagToDeploy = getTagToDeploy(identifier, tag);
             Stage stage = stageService.getStage(stageName);
             Image image = projectService.markImageAsDeployed(identifier, tagToDeploy, stage);
             stageService.imageDeployed(identifier, image, host, port);
         } catch (TagNotValidException e) {
             e.printStackTrace();
         }
+    }
+
+    private Tag getTagToDeploy(String identifier, String tag) throws TagNotValidException {
+        Tag tagToDeploy;
+        if (tag.equals(LATEST)) {
+            tagToDeploy = projectService.getLatestTag(identifier);
+        } else {
+            tagToDeploy = new Tag(tag);
+        }
+        return tagToDeploy;
     }
 
     @Override
