@@ -5,6 +5,7 @@ import de.bas.deploymentmanager.logic.domain.project.boundary.ProjectService;
 import de.bas.deploymentmanager.logic.domain.project.entity.Image;
 import de.bas.deploymentmanager.logic.domain.project.entity.Project;
 import de.bas.deploymentmanager.logic.domain.project.entity.Tag;
+import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImgageNotFoundException;
 import de.bas.deploymentmanager.logic.domain.project.entity.exception.TagNotValidException;
 import de.bas.deploymentmanager.logic.domain.stage.boundary.StageService;
 import de.bas.deploymentmanager.logic.domain.stage.entity.Stage;
@@ -55,7 +56,7 @@ public class DeployFlowImpl implements DeployFlow {
     }
 
     @Override
-    public void deployImage(String identifier, StageEnum stage, Tag tag) {
+    public void deployImage(String identifier, StageEnum stage, Tag tag) throws ImgageNotFoundException {
         log.info("Projekt {} wird auf Stage {} mit Tag {} deployed", identifier, stage, tag);
         Project project = projectService.getProject(identifier);
         Image imageToDeploy = projectService.getImage(project.getId(), tag);

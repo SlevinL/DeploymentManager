@@ -5,6 +5,7 @@ import de.bas.deploymentmanager.logic.domain.project.entity.NewImageModel;
 import de.bas.deploymentmanager.logic.domain.project.entity.Project;
 import de.bas.deploymentmanager.logic.domain.project.entity.Tag;
 import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImageDeleteException;
+import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImgageNotFoundException;
 import de.bas.deploymentmanager.logic.domain.stage.entity.Stage;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public interface ProjectService {
 
     List<Image> getImages(Long projectId);
 
-    Image getImage(Long applicationId, Tag tag);
+    Image getImage(Long applicationId, Tag tag) throws ImgageNotFoundException;
 
     Project getProject(Long id);
 

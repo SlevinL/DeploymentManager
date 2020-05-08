@@ -5,7 +5,9 @@ import de.bas.deploymentmanager.logic.domain.project.entity.Image;
 import de.bas.deploymentmanager.logic.domain.project.entity.Tag;
 import de.bas.deploymentmanager.logic.domain.project.entity.Version;
 import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImageDeleteException;
+import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImgageNotFoundException;
 
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import java.util.List;
@@ -63,15 +65,17 @@ public class ImageRepositoryImpl extends AbstractRepository implements ImageRepo
     }
 
     @Override
-    public Image getImageByProjectIdTag(Long applicationId, Tag tag) {
+    public Image getImageByProjectIdTag(Long applicationId, Tag tag) throws ImgageNotFoundException {
         TypedQuery<Image> selectAll = entityManager.createQuery("SELECT image FROM Image image " +
                 "WHERE image.projectId =:applicationId " +
                 "AND image.tag =:tag", Image.class);
         selectAll.setParameter("applicationId", applicationId);
         selectAll.setParameter("tag", tag);
-        return selectAll.getSingleResult();
-
-
+        try {
+            return selectAll.getSingleResult();
+        } catch (NoResultException e) {
+            throw new ImgageNotFoundException("Image mit dem Tag " + tag + " und der ProjectId " + applicationId + " nicht gefunden");
+        }
     }
 
     @Override

@@ -9,6 +9,7 @@ import de.bas.deploymentmanager.logic.business.loadpipeline.ProjectStageModel;
 import de.bas.deploymentmanager.logic.domain.project.entity.Image;
 import de.bas.deploymentmanager.logic.domain.project.entity.Project;
 import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImageDeleteException;
+import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImgageNotFoundException;
 import de.bas.deploymentmanager.logic.domain.stage.entity.StageEnum;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -61,7 +62,7 @@ public class PipelineFormBean implements Serializable {
         appsDeployed = model.getDeployedOn();
     }
 
-    public void deploy(Image image, StageEnum stage) {
+    public void deploy(Image image, StageEnum stage) throws ImgageNotFoundException {
         log.info("Deploy Projekt {} auf Stage {}", project.getName(), stage);
         deployFlow.deployImage(project.getIdentifier(), stage, image.getTag());
     }

@@ -3,6 +3,7 @@ package de.bas.deploymentmanager.logic.domain.project.control;
 import de.bas.deploymentmanager.logic.domain.project.boundary.ProjectService;
 import de.bas.deploymentmanager.logic.domain.project.entity.*;
 import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImageDeleteException;
+import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImgageNotFoundException;
 import de.bas.deploymentmanager.logic.domain.stage.entity.Stage;
 import de.bas.deploymentmanager.logic.domain.stage.entity.StageEnum;
 import org.slf4j.Logger;
@@ -59,10 +60,17 @@ public class ProjectServiceImpl implements ProjectService {
                 , newTag.getVersion()
                 , newTag.getBuildNumber());
 
-        Image image = createNewImage(project.getId()
-                , newTag
-                , newImageModel);
-        Image save = imageRepository.save(image);
+        try {
+            Image imageByProjectIdTag = imageRepository.getImageByProjectIdTag(project.getId(), newTag);
+            imageByProjectIdTag.setCreateDate(LocalDateTime.now());
+            imageByProjectIdTag.setUser(newImageModel.getUser());
+            imageByProjectIdTag.setCommit(newImageModel.getCommit());
+        } catch (ImgageNotFoundException e) {
+            Image image = createNewImage(project.getId()
+                    , newTag
+                    , newImageModel);
+            Image save = imageRepository.save(image);
+        }
         return newTag;
     }
 
@@ -92,7 +100,15 @@ public class ProjectServiceImpl implements ProjectService {
 
         Optional<Image> optionalImage = imageRepository.getLastImageOfVersion(project.getId(), version);
 
-        int buildNumber = optionalImage.map(image -> image.getTag().getBuildNumber() + 1).orElse(1);
+        int buildNumber = optionalImage.map(image -> {
+            if (version.isSnapshot()) {
+                return image.getTag().getBuildNumber();
+            } else {
+                return image.getTag().getBuildNumber() + 1;
+            }
+        }).orElse(1);
+
+
         return new Tag(version, buildNumber);
     }
 
@@ -138,7 +154,6 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
 
-
     @Override
     public Project createNewProject(Project model) {
         return projectRepository.save(model);
@@ -157,7 +172,7 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Image getImage(Long applicationId, Tag tag) {
+    public Image getImage(Long applicationId, Tag tag) throws ImgageNotFoundException {
         return imageRepository.getImageByProjectIdTag(applicationId, tag);
     }
 

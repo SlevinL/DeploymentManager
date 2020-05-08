@@ -1,6 +1,7 @@
 package de.bas.deploymentmanager.logic.business.deploy;
 
 import de.bas.deploymentmanager.logic.domain.project.entity.Tag;
+import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImgageNotFoundException;
 import de.bas.deploymentmanager.logic.domain.stage.entity.StageEnum;
 
 
@@ -26,5 +27,5 @@ public interface DeployFlow {
      * @param stage
      * @param tag
      */
-    void deployImage(String identifier, StageEnum stage, Tag tag);
+    void deployImage(String identifier, StageEnum stage, Tag tag) throws ImgageNotFoundException;
 }

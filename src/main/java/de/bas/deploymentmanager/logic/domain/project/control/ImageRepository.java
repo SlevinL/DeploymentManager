@@ -4,6 +4,7 @@ import de.bas.deploymentmanager.logic.domain.project.entity.Image;
 import de.bas.deploymentmanager.logic.domain.project.entity.Tag;
 import de.bas.deploymentmanager.logic.domain.project.entity.Version;
 import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImageDeleteException;
+import de.bas.deploymentmanager.logic.domain.project.entity.exception.ImgageNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -17,7 +18,7 @@ public interface ImageRepository {
 
     Image getImageByIdentifierTag(String identifier, Tag tag);
 
-    Image getImageByProjectIdTag(Long applicationId, Tag tag);
+    Image getImageByProjectIdTag(Long applicationId, Tag tag) throws ImgageNotFoundException;
 
     void delete(Long id) throws ImageDeleteException;
 

@@ -26,15 +26,28 @@ public class Version {
     @Column(name = "INCREMENTAL_VERSION")
     private Integer incrementalVersion;
 
+    @Transient
+    private boolean snapshot;
+
     public Version() {
     }
 
     public Version(String version) {
+        this.snapshot = isSnapshotVersion(version);
         this.majorVersion = getMajorVersion(version);
         this.minorVersion = getMinorVersion(version);
         this.incrementalVersion = getIncrementalVersion(version);
 
 
+    }
+
+    private boolean isSnapshotVersion(String version) {
+        if (version != null && !version.isEmpty()) {
+            if (version.contains("SNAPSHOT")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private int getIncrementalVersion(String version) {
@@ -47,7 +60,8 @@ public class Version {
         } else {
             try {
                 String number = versionArray[2];
-                number = number.replace("-SNAPSHOT", "");
+                String[] split = number.split("-");
+                number = split[0];
                 return Integer.parseInt(number);
             } catch (NumberFormatException e) {
                 log.warn("IncrementalVersion konnte nicht ermittelt werden");
