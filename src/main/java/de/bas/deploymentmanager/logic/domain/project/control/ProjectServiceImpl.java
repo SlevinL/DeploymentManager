@@ -65,6 +65,7 @@ public class ProjectServiceImpl implements ProjectService {
             imageByProjectIdTag.setCreateDate(LocalDateTime.now());
             imageByProjectIdTag.setUser(newImageModel.getUser());
             imageByProjectIdTag.setCommit(newImageModel.getCommit());
+            imageRepository.save(imageByProjectIdTag);
         } catch (ImgageNotFoundException e) {
             Image image = createNewImage(project.getId()
                     , newTag
