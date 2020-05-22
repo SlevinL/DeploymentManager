@@ -39,5 +39,5 @@ public interface JenkinsClient {
     Response deploy(@PathParam("jobName") String jobName, @QueryParam("TAG") String tag
             , @QueryParam("ETW_DEPLOY") boolean etwDeploy
             , @QueryParam("INT_DEPLOY") boolean intDeploy
-            , @QueryParam("PRD_DEPLOY") boolean prdDeploy);
+            , @QueryParam("PROD_DEPLOY") boolean prdDeploy);
 }
