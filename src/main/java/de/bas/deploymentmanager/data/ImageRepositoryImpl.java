@@ -22,7 +22,7 @@ public class ImageRepositoryImpl extends AbstractRepository implements ImageRepo
     @Override
     public List<Image> getImagesForProject(Long projectId) {
         TypedQuery<Image> selectAll = entityManager.createQuery("SELECT image FROM Image image WHERE image.projectId = :applicationId " +
-                "ORDER BY image.tag.version.majorVersion, image.tag.version.minorVersion, image.tag.version.incrementalVersion, image.tag.buildNumber desc ", Image.class);
+                "ORDER BY image.tag.version.majorVersion desc, image.tag.version.minorVersion desc, image.tag.version.incrementalVersion desc, image.tag.buildNumber desc ", Image.class);
         selectAll.setParameter("applicationId", projectId);
         return selectAll.getResultList();
     }
