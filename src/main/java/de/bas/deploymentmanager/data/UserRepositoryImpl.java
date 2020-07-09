@@ -24,4 +24,9 @@ public class UserRepositoryImpl implements UserRepository {
         user.setApiToken(apiKey);
         return user;
     }
+
+    @Override
+    public User save(User user) {
+        return user;
+    }
 }

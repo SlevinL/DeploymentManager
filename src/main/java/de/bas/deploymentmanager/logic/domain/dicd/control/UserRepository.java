@@ -10,4 +10,6 @@ public interface UserRepository {
      * @return User
      */
     User getUserByLoginName();
+
+    User save(User user);
 }

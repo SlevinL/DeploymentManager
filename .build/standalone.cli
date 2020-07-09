@@ -1,4 +1,5 @@
 embed-server --server-config=standalone.xml --std-out=echo
 run-batch --file=/tmp/datasource.cli
 run-batch --file=/tmp/openapi.cli
+run-batch --file=/tmp/keycloak.cli
 stop-embedded-server

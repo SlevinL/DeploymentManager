@@ -1,0 +1,6 @@
+/subsystem=keycloak/secure-deployment="deployment-manager.war"/:add( \
+    realm="BAS", \
+    resource="deploymentmanager", \
+    auth-server-url=http://localhost:8180/auth/, \
+    public-client=true, \
+    ssl-required=EXTERNAL)

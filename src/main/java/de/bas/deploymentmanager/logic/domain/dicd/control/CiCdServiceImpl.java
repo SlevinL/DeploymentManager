@@ -1,6 +1,7 @@
 package de.bas.deploymentmanager.logic.domain.dicd.control;
 
 import de.bas.deploymentmanager.logic.domain.dicd.boundary.CiCdService;
+import de.bas.deploymentmanager.logic.domain.dicd.entity.User;
 import de.bas.deploymentmanager.logic.domain.stage.entity.StageEnum;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 import org.slf4j.Logger;
@@ -15,11 +16,13 @@ public class CiCdServiceImpl implements CiCdService {
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     private final JenkinsClient jenkinsClient;
+    private final UserRepository userRepository;
 
     @Inject
     @RestClient
-    public CiCdServiceImpl(JenkinsClient jenkinsClient) {
+    public CiCdServiceImpl(JenkinsClient jenkinsClient, UserRepository userRepository) {
         this.jenkinsClient = jenkinsClient;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -50,11 +53,22 @@ public class CiCdServiceImpl implements CiCdService {
 
     /**
      * Startet einen Build auf dem Jenkins über den Restendpoint im Client
+     *
      * @param jobName buildJob
      */
     @Override
     public void buildImage(String jobName) {
         Response build = jenkinsClient.build(jobName, true);
         log.info("");
+    }
+
+    @Override
+    public User getActualUser() {
+        return userRepository.getUserByLoginName();
+    }
+
+    @Override
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
 }

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml" xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core" xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="#{layoutMB.template}">
+
+    <ui:define name="menu">
+        <ui:include src="/content/menu.xhtml"/>
+    </ui:define>
+
+
+    <ui:define name="title">
+        Profil Einstellungen
+    </ui:define>
+
+    <ui:define name="body">
+        <f:metadata>
+
+        </f:metadata>
+
+        <h:form id="form" prependId="false">
+
+            <div class="box box-primary">
+                <div class="box-header with-border">
+                    <div id="main-buttons" class="hidden-sm hidden-xs">
+                        <p:commandButton value="Speichern"
+                                         actionListener="#{userFormBean.save()}"
+                                         styleClass="btn-primary"
+                                         process="@form"
+                                         update="@form"/>
+                    </div>
+
+
+                    <p:separator/>
+
+                    <div class="ui-g ui-fluid">
+                        <div class="ui-sm-12 ui-md-2 ui-lg-1">
+                            <p:outputLabel for="id" value="Keycloak Id"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-4 ui-lg-5">
+                            <p:inputText id="id" value="#{userFormBean.user.id}" readonly="true"
+                                         styleClass="form-control" style="width: 100%"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-2 ui-lg-1">
+                            <p:outputLabel for="key" value="Api-Key"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-4 ui-lg-5">
+                            <p:inputText id="key" value="#{userFormBean.user.apiToken}"
+                                         styleClass="form-control" style="width: 100%"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-2 ui-lg-1">
+                            <p:outputLabel for="login" value="Login Name"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-4 ui-lg-5">
+                            <p:inputText id="login" value="#{userFormBean.user.loginName}"
+                                         styleClass="form-control" style="width: 100%"/>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

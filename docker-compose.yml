@@ -3,7 +3,7 @@ services:
   manager:
     build: .
     ports:
-      - "8080:8080"
+      - "8081:8080"
 
   postgres:
     image: postgres
@@ -20,6 +20,11 @@ services:
       - "50000:50000"
 
   keycloak:
-    image: jboss/keycloak
+    container_name: keycloak
+    image: jboss/keycloak:10.0.2
     ports:
       - "8180:8080"
+    environment:
+      - KEYCLOAK_USER=docker
+      - KEYCLOAK_PASSWORD=Docker12!
+      - DB_VENDOR=h2

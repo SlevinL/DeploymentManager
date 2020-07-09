@@ -1,5 +1,6 @@
 package de.bas.deploymentmanager.logic.domain.dicd.boundary;
 
+import de.bas.deploymentmanager.logic.domain.dicd.entity.User;
 import de.bas.deploymentmanager.logic.domain.stage.entity.StageEnum;
 
 public interface CiCdService {
@@ -20,4 +21,20 @@ public interface CiCdService {
      * @param jobName buildJob
      */
     void buildImage(String jobName);
+
+    /**
+     * Holt den aktuell angemeldeten User für den Jenkins
+     * Wurde noch kein User angelegt, wird ein neues Objekt erzeugt
+     *
+     * @return User
+     */
+    User getActualUser();
+
+    /**
+     * Speichert die Änderungen an einem User
+     *
+     * @param user
+     * @return
+     */
+    User saveUser(User user);
 }
