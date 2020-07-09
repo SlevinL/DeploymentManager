@@ -1,5 +1,6 @@
 package de.bas.deploymentmanager.logic.domain.dicd.control;
 
+import de.bas.deploymentmanager.data.KeycloakUser;
 import de.bas.deploymentmanager.logic.domain.dicd.entity.User;
 import org.eclipse.microprofile.rest.client.ext.ClientHeadersFactory;
 
@@ -13,6 +14,7 @@ public class BasicAuthHeaderFactory implements ClientHeadersFactory {
     public static final String BASIC = "Basic ";
 
     @Inject
+    @KeycloakUser
     private UserRepository userRepository;
 
     @Override

@@ -1,5 +1,6 @@
 package de.bas.deploymentmanager.logic.domain.dicd.control;
 
+import de.bas.deploymentmanager.data.KeycloakUser;
 import de.bas.deploymentmanager.logic.domain.dicd.boundary.CiCdService;
 import de.bas.deploymentmanager.logic.domain.dicd.entity.User;
 import de.bas.deploymentmanager.logic.domain.stage.entity.StageEnum;
@@ -20,7 +21,7 @@ public class CiCdServiceImpl implements CiCdService {
 
     @Inject
     @RestClient
-    public CiCdServiceImpl(JenkinsClient jenkinsClient, UserRepository userRepository) {
+    public CiCdServiceImpl(JenkinsClient jenkinsClient, @KeycloakUser UserRepository userRepository) {
         this.jenkinsClient = jenkinsClient;
         this.userRepository = userRepository;
     }
