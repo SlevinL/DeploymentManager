@@ -231,6 +231,11 @@ public class ProjectServiceImpl implements ProjectService {
         return latest.getTag();
     }
 
+    @Override
+    public Image getImageById(Long imageId) {
+        return imageRepository.getById(imageId);
+    }
+
     /**
      * Prüft ob das Image der letzte Build einer Version ist.
      * Wenn ja dann kann das Image nicht gelöscht werden

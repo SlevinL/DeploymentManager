@@ -100,4 +100,6 @@ public interface ProjectService {
      * @return
      */
     Tag getLatestTag(String identifier);
+
+    Image getImageById(Long imageId);
 }
